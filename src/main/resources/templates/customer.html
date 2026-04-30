@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dreamora | Taste the Magic</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root{
+            --orange:#ff7a3d;
+            --orange-dark:#f26422;
+            --orange-soft:#fff1e8;
+            --dark:#182233;
+            --text:#1f2937;
+            --muted:#8b95a7;
+            --bg:#f6f7fb;
+            --white:#ffffff;
+            --line:#e9ecf2;
+            --green:#22c55e;
+            --green-dark:#16a34a;
+            --red:#ef4444;
+            --shadow:0 10px 25px rgba(15,23,42,.06);
+        }
+
+        *{
+            box-sizing:border-box;
+        }
+
+        html,body{
+            margin:0;
+            padding:0;
+            font-family:'Outfit',sans-serif;
+            background:var(--bg);
+            color:var(--text);
+        }
+
+        a{
+            text-decoration:none;
+            color:inherit;
+        }
+
+        body{
+            overflow-x:hidden;
+        }
+
+        /* NAVBAR */
+        .top-nav{
+            position:sticky;
+            top:0;
+            z-index:1000;
+            background:rgba(255,255,255,0.96);
+            backdrop-filter:blur(14px);
+            border-bottom:1px solid var(--line);
+            padding:16px 32px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:18px;
+        }
+
+        .logo{
+            font-size:22px;
+            font-weight:800;
+            color:var(--dark);
+            min-width:180px;
+        }
+
+        .logo span{
+            color:var(--orange);
+        }
+
+        .search-bar{
+            flex:1;
+            max-width:460px;
+            background:#f2f4f8;
+            padding:12px 18px;
+            border-radius:16px;
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+
+        .search-bar i{
+            color:#9aa3b2;
+        }
+
+        .search-bar input{
+            border:none;
+            background:transparent;
+            outline:none;
+            width:100%;
+            font-size:15px;
+            font-family:inherit;
+            color:var(--text);
+        }
+
+        .nav-icons{
+            display:flex;
+            gap:16px;
+            align-items:center;
+            min-width:100px;
+            justify-content:flex-end;
+        }
+
+        .nav-icons i{
+            font-size:20px;
+            color:var(--dark);
+            cursor:pointer;
+        }
+
+        /* HERO */
+        .hero{
+            margin:24px 32px 18px;
+            padding:34px 36px;
+            border-radius:30px;
+            background:linear-gradient(135deg, #fff4ed 0%, #ffe8dc 100%);
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:20px;
+            border:1px solid #ffe0d1;
+        }
+
+        .hero-content h1{
+            margin:0 0 8px 0;
+            font-size:38px;
+            font-weight:800;
+            line-height:1.15;
+            color:var(--dark);
+        }
+
+        .hero-content h1 span{
+            color:var(--orange);
+        }
+
+        .hero-content p{
+            margin:0;
+            color:#7b8798;
+            font-size:16px;
+            font-weight:500;
+        }
+
+        .hero-icon{
+            font-size:82px;
+            color:#ffb08b;
+            opacity:.8;
+        }
+
+        /* CATEGORY */
+        .category-container{
+            display:flex;
+            gap:14px;
+            padding:8px 32px 22px;
+            overflow-x:auto;
+            scrollbar-width:none;
+        }
+
+        .category-container::-webkit-scrollbar{
+            display:none;
+        }
+
+        .cat-pill{
+            white-space:nowrap;
+            text-decoration:none;
+            padding:13px 22px;
+            background:#fff;
+            border:1px solid #e7eaf0;
+            border-radius:16px;
+            color:#64748b;
+            font-size:15px;
+            font-weight:700;
+            transition:.2s ease;
+        }
+
+        .cat-pill:hover{
+            color:var(--orange-dark);
+            border-color:#ffd2bd;
+        }
+
+        .cat-pill.active{
+            background:var(--orange);
+            color:#fff;
+            border-color:var(--orange);
+            box-shadow:0 10px 18px rgba(255,122,61,.18);
+        }
+
+        /* GRID */
+        .container{
+            padding:0 32px 42px;
+            display:grid;
+            grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
+            gap:28px;
+        }
+
+        .card{
+            background:var(--white);
+            border-radius:28px;
+            overflow:hidden;
+            border:1px solid var(--line);
+            position:relative;
+            box-shadow:var(--shadow);
+            transition:.25s ease;
+        }
+
+        .card:hover{
+            transform:translateY(-4px);
+        }
+
+        .sold-out{
+            opacity:.88;
+        }
+
+        .img-container{
+            position:relative;
+            height:235px;
+            overflow:hidden;
+            background:#f1f5f9;
+        }
+
+        .card img{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            display:block;
+        }
+
+        /* TOP LEFT availability */
+        .availability-tag{
+            position:absolute;
+            top:14px;
+            left:14px;
+            padding:8px 14px;
+            border-radius:999px;
+            font-size:12px;
+            font-weight:800;
+            color:#fff;
+            z-index:12;
+            box-shadow:0 6px 14px rgba(0,0,0,.12);
+        }
+
+        /* TOP RIGHT marketing tag */
+        .marketing-tag{
+            position:absolute;
+            top:14px;
+            right:14px;
+            padding:8px 14px;
+            border-radius:999px;
+            font-size:11px;
+            font-weight:800;
+            color:#fff;
+            z-index:12;
+            text-transform:uppercase;
+            letter-spacing:.04em;
+            box-shadow:0 6px 14px rgba(0,0,0,.12);
+        }
+
+        .tag-new{
+            background:#22c55e !important;
+        }
+
+        .tag-popular{
+            background:#f59e0b !important;
+        }
+
+        .tag-special{
+            background:#ef4444 !important;
+        }
+
+        .combo-badge{
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
+            background:#f3e8ff;
+            color:#7c3aed;
+            padding:6px 10px;
+            border-radius:999px;
+            font-size:11px;
+            font-weight:800;
+            margin-bottom:10px;
+            text-transform:uppercase;
+        }
+
+        .sold-out-overlay{
+            position:absolute;
+            inset:0;
+            background:rgba(255,255,255,.58);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            z-index:10;
+            font-weight:800;
+            color:#111827;
+            letter-spacing:.08em;
+        }
+
+        .card-body{
+            padding:20px 22px 22px;
+        }
+
+        .card h3{
+            margin:0 0 12px 0;
+            font-size:22px;
+            font-weight:800;
+            color:var(--dark);
+            line-height:1.2;
+        }
+
+        .combo-desc{
+            margin:0 0 10px 0;
+            font-size:13px;
+            color:#7b8798;
+            font-weight:500;
+        }
+
+        /* SIZE BUTTON */
+        .toggle-container{
+            margin-bottom:15px;
+        }
+
+        .size-toggle-btn{
+            width:100%;
+            padding:12px 14px;
+            background:#f3f4f7;
+            border:1px solid #e5e7eb;
+            border-radius:14px;
+            font-family:'Outfit',sans-serif;
+            font-weight:700;
+            color:var(--dark);
+            cursor:pointer;
+            transition:.25s ease;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:10px;
+        }
+
+        .size-toggle-btn:hover{
+            border-color:#ffd1bc;
+        }
+
+        .size-toggle-btn.large-active{
+            background:var(--orange-soft);
+            color:var(--orange-dark);
+            border-color:#ffc7aa;
+        }
+
+        .price-section{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:14px;
+        }
+
+        .price{
+            display:flex;
+            align-items:baseline;
+            gap:7px;
+            flex-wrap:wrap;
+        }
+
+        .price-currency{
+            font-size:15px;
+            color:#a0a8b6;
+            font-weight:700;
+        }
+
+        .price-value{
+            font-size:28px;
+            font-weight:800;
+            color:var(--orange);
+            line-height:1;
+        }
+
+        .add-cart-btn{
+            background:var(--dark);
+            color:#fff;
+            width:48px;
+            height:48px;
+            border-radius:16px;
+            border:none;
+            cursor:pointer;
+            transition:.2s ease;
+            flex-shrink:0;
+        }
+
+        .add-cart-btn:hover{
+            background:var(--orange);
+        }
+
+        .empty-state{
+            grid-column:1 / -1;
+            background:#fff;
+            border:1px solid var(--line);
+            border-radius:24px;
+            text-align:center;
+            padding:40px 20px;
+            color:#94a3b8;
+            font-weight:600;
+        }
+
+        @media (max-width: 980px){
+            .top-nav{
+                flex-wrap:wrap;
+                padding:16px 18px;
+            }
+
+            .search-bar{
+                order:3;
+                width:100%;
+                max-width:none;
+            }
+
+            .hero{
+                margin:18px;
+                padding:26px;
+            }
+
+            .hero-content h1{
+                font-size:30px;
+            }
+
+            .category-container{
+                padding:8px 18px 18px;
+            }
+
+            .container{
+                padding:0 18px 30px;
+                grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+            }
+        }
+
+        @media (max-width: 640px){
+            .hero{
+                flex-direction:column;
+                align-items:flex-start;
+            }
+
+            .hero-icon{
+                display:none;
+            }
+
+            .container{
+                grid-template-columns:1fr;
+            }
+
+        }
+        .customer-layout {
+            display: flex;
+            min-height: 100vh;
+         }
+
+        .customer-sidebar {
+            width: 220px;
+            background: #f7f7f7;
+            padding: 25px 15px;
+            border-right: 1px solid #ddd;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        .customer-sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .customer-sidebar a {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            margin-bottom: 12px;
+            background: white;
+            color: #333;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+         }
+
+        .customer-sidebar a.active {
+            background: #ff6600;
+            color: white;
+        }
+
+        .customer-sidebar .logout {
+            color: #e63946;
+        }
+
+        .customer-main {
+            margin-left: 220px;
+            width: calc(100% - 220px);
+        }
+    </style>
+</head>
+<body>
+
+<div class="customer-layout">
+
+    <aside class="customer-sidebar">
+        <h2>Dreamora</h2>
+
+        <a th:href="@{/customer}" class="active">Menu Items</a>
+        <a href="#">Payment</a>
+        <a href="#">Order</a>
+        <a href="#">Delivery</a>
+
+        <hr style="margin: 30px 0;">
+
+        <a href="#">Profile</a>
+        <a href="#" class="logout">Logout</a>
+    </aside>
+
+    <main class="customer-main">
+<nav class="top-nav">
+    <div class="logo">Dreamora</div>
+
+    <form th:action="@{/customer}" method="get" class="search-bar">
+        <i class="fa fa-search"></i>
+        <input type="text" name="keyword" placeholder="Search for food items..." th:value="${searchKeyword}">
+    </form>
+
+    <div class="nav-icons">
+        <i class="fa-regular fa-heart"></i>
+        <i class="fa-solid fa-bag-shopping"></i>
+    </div>
+</nav>
+
+<div class="hero">
+    <div class="hero-content">
+        <h1>It’s Not Just Food,<br><span>It’s an Experience.</span></h1>
+        <p>Savor the bold flavors of DreaMora.</p>
+    </div>
+    <i class="fa-solid fa-utensils hero-icon"></i>
+</div>
+
+<div class="category-container">
+    <a th:href="@{/customer(category='All', keyword=${searchKeyword})}"
+       th:class="${selectedCategory == null or selectedCategory == 'All'} ? 'cat-pill active' : 'cat-pill'">
+        🔥 All Featured
+    </a>
+
+    <a th:each="cat : ${categories}"
+       th:href="@{/customer(category=${cat}, keyword=${searchKeyword})}"
+       th:text="${cat}"
+       th:class="${selectedCategory == cat} ? 'cat-pill active' : 'cat-pill'">
+        Category
+    </a>
+</div>
+
+<div class="container">
+    <div th:if="${#lists.isEmpty(items)}" class="empty-state">
+        No menu items found.
+    </div>
+
+    <div th:each="item : ${items}"
+         th:class="${item.available} ? 'card' : 'card sold-out'">
+
+        <div class="img-container">
+
+            <div class="availability-tag"
+                 th:style="${item.available} ? 'background: linear-gradient(135deg, #22c55e, #16a34a);' : 'background: linear-gradient(135deg, #ef4444, #dc2626);'"
+                 th:text="${item.available} ? 'Available Now' : 'Sold Out'">
+                Available Now
+            </div>
+
+            <div th:if="${item.tag != null and !#strings.isEmpty(#strings.trim(item.tag))}"
+                 class="marketing-tag"
+                 th:classappend="${
+        #strings.equalsIgnoreCase(#strings.trim(item.tag), 'New') ? ' tag-new' :
+        (#strings.equalsIgnoreCase(#strings.trim(item.tag), 'Popular') ? ' tag-popular' :
+        (#strings.equalsIgnoreCase(#strings.trim(item.tag), 'Special') ? ' tag-special' : ''))
+     }"
+                 th:text="${#strings.trim(item.tag)}">
+            </div>
+
+            <div th:if="${!item.available}" class="sold-out-overlay">RESTOCKING SOON</div>
+
+            <img th:src="${item.imageUrl}" th:alt="${item.name}">
+        </div>
+
+        <div class="card-body">
+
+            <div th:if="${item.combo}" class="combo-badge">
+                <i class="fa-solid fa-fire"></i>
+                Combo Deal
+            </div>
+
+            <p th:if="${item.combo and item.comboItems != null and !#strings.isEmpty(#strings.trim(item.comboItems))}"
+               class="combo-desc"
+               th:text="'Includes: ' + ${item.comboItems}">
+                Includes: ...
+            </p>
+
+            <h3 th:text="${item.name}">Item Name</h3>
+
+            <!-- size option only for non-beverage food items -->
+            <div th:if="${item.largePrice != null and item.largePrice > 0 and item.category != null and !#strings.equalsIgnoreCase(#strings.trim(item.category), 'Beverages') and !#strings.equalsIgnoreCase(#strings.trim(item.category), 'Drinks') and !#strings.equalsIgnoreCase(#strings.trim(item.category), 'Beverage')}"
+                 class="toggle-container">
+                <button type="button"
+                        class="size-toggle-btn"
+                        th:attr="data-id=${item.id},data-normal=${item.price},data-large=${item.largePrice}"
+                        data-state="normal"
+                        onclick="toggleSize(this)">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                    <span class="size-label">Normal</span>
+                </button>
+            </div>
+
+            <div class="price-section">
+                <div class="price">
+                    <span class="price-currency">LKR</span>
+                    <span class="price-value"
+                          th:id="'display-price-' + ${item.id}"
+                          th:text="${#numbers.formatDecimal(item.price, 1, 'NONE', 2, 'POINT')}">
+                        0.00
+                    </span>
+                </div>
+
+                <button class="add-cart-btn" th:if="${item.available}" type="button">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:if="${session.loggedUser != null and session.loggedUser.role == 'ADMIN'}"
+     style="text-align:center; margin: 40px 0 20px 0;">
+    <a th:href="@{/admin}" style="
+        display: inline-block;
+        background: #1e1e27;
+        color: white;
+        text-decoration: none;
+        padding: 12px 22px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-family: 'Outfit', sans-serif;
+    ">
+        Back to Admin Panel
+    </a>
+</div>
+
+<script>
+    function toggleSize(btn) {
+        const id = btn.getAttribute('data-id');
+        const normalPrice = parseFloat(btn.getAttribute('data-normal'));
+        const largePrice = parseFloat(btn.getAttribute('data-large'));
+        const currentState = btn.getAttribute('data-state');
+        const label = btn.querySelector('.size-label');
+        const priceDisplay = document.getElementById('display-price-' + id);
+
+        if (!priceDisplay) return;
+
+        if (currentState === 'normal') {
+            priceDisplay.textContent = largePrice.toFixed(2);
+            label.textContent = 'Large';
+            btn.setAttribute('data-state', 'large');
+            btn.classList.add('large-active');
+        } else {
+            priceDisplay.textContent = normalPrice.toFixed(2);
+            label.textContent = 'Normal';
+            btn.setAttribute('data-state', 'normal');
+            btn.classList.remove('large-active');
+        }
+    }
+</script>
+    </main>
+</div>
+</body>
+</html>

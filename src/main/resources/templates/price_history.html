@@ -1,0 +1,438 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Price History | DreaMora</title>-->
+<!--    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">-->
+<!--    <style>-->
+<!--        :root {-->
+<!--            &#45;&#45;primary-orange: #FF7A3D;-->
+<!--            &#45;&#45;sidebar-bg: #FFFFFF;-->
+<!--            &#45;&#45;main-bg: #F8F9FD;-->
+<!--            &#45;&#45;text-dark: #2D3436;-->
+<!--            &#45;&#45;text-muted: #636E72;-->
+<!--            &#45;&#45;card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);-->
+<!--        }-->
+
+<!--        body {-->
+<!--            font-family: 'Plus Jakarta Sans', sans-serif;-->
+<!--            margin: 0;-->
+<!--            display: flex;-->
+<!--            background-color: var(&#45;&#45;main-bg);-->
+<!--            color: var(&#45;&#45;text-dark);-->
+<!--        }-->
+
+<!--        /* Sidebar Styling */-->
+<!--        .sidebar {-->
+<!--            width: 260px;-->
+<!--            height: 100vh;-->
+<!--            background: var(&#45;&#45;sidebar-bg);-->
+<!--            padding: 24px;-->
+<!--            position: fixed;-->
+<!--            border-right: 1px solid #EDEDED;-->
+<!--        }-->
+
+<!--        .logo {-->
+<!--            font-size: 22px;-->
+<!--            font-weight: 800;-->
+<!--            margin-bottom: 40px;-->
+<!--            color: var(&#45;&#45;text-dark);-->
+<!--        }-->
+
+<!--        .nav-item {-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            padding: 12px 16px;-->
+<!--            margin-bottom: 8px;-->
+<!--            text-decoration: none;-->
+<!--            color: var(&#45;&#45;text-muted);-->
+<!--            border-radius: 12px;-->
+<!--            transition: 0.3s;-->
+<!--        }-->
+
+<!--        .nav-item.active {-->
+<!--            background: rgba(255, 122, 61, 0.1);-->
+<!--            color: var(&#45;&#45;primary-orange);-->
+<!--            font-weight: 600;-->
+<!--        }-->
+
+<!--        /* Main Content */-->
+<!--        .main-content {-->
+<!--            margin-left: 310px;-->
+<!--            padding: 40px;-->
+<!--            width: calc(100% - 310px);-->
+<!--        }-->
+
+<!--        .header-section {-->
+<!--            margin-bottom: 32px;-->
+<!--        }-->
+
+<!--        .header-section h1 {-->
+<!--            font-size: 28px;-->
+<!--            margin-bottom: 8px;-->
+<!--        }-->
+
+<!--        .header-section p {-->
+<!--            color: var(&#45;&#45;text-muted);-->
+<!--            margin: 0;-->
+<!--        }-->
+
+<!--        /* Summary Cards */-->
+<!--        .stats-grid {-->
+<!--            display: grid;-->
+<!--            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));-->
+<!--            gap: 24px;-->
+<!--            margin-bottom: 32px;-->
+<!--        }-->
+
+<!--        .stat-card {-->
+<!--            background: white;-->
+<!--            padding: 24px;-->
+<!--            border-radius: 20px;-->
+<!--            box-shadow: var(&#45;&#45;card-shadow);-->
+<!--        }-->
+
+<!--        .stat-card span {-->
+<!--            display: block;-->
+<!--            color: var(&#45;&#45;text-muted);-->
+<!--            font-size: 14px;-->
+<!--            font-weight: 600;-->
+<!--            text-transform: uppercase;-->
+<!--        }-->
+
+<!--        .stat-card h2 {-->
+<!--            font-size: 32px;-->
+<!--            margin: 8px 0 0 0;-->
+<!--        }-->
+
+<!--        /* Table Container */-->
+<!--        .table-container {-->
+<!--            background: white;-->
+<!--            border-radius: 20px;-->
+<!--            padding: 24px;-->
+<!--            box-shadow: var(&#45;&#45;card-shadow);-->
+<!--        }-->
+
+<!--        table {-->
+<!--            width: 100%;-->
+<!--            border-collapse: separate;-->
+<!--            border-spacing: 0;-->
+<!--        }-->
+
+<!--        th {-->
+<!--            text-align: left;-->
+<!--            padding: 16px;-->
+<!--            color: var(&#45;&#45;text-muted);-->
+<!--            font-weight: 600;-->
+<!--            border-bottom: 1px solid #f0f0f0;-->
+<!--        }-->
+
+<!--        td {-->
+<!--            padding: 16px;-->
+<!--            border-bottom: 1px solid #f8f9fa;-->
+<!--        }-->
+
+<!--        tr:last-child td { border-bottom: none; }-->
+
+<!--        .price-badge {-->
+<!--            font-weight: 600;-->
+<!--            color: var(&#45;&#45;primary-orange);-->
+<!--        }-->
+
+<!--        .date-text {-->
+<!--            color: var(&#45;&#45;text-muted);-->
+<!--            font-size: 14px;-->
+<!--        }-->
+
+<!--        .btn-back {-->
+<!--            display: inline-block;-->
+<!--            margin-top: 24px;-->
+<!--            background: var(&#45;&#45;primary-orange);-->
+<!--            color: white;-->
+<!--            padding: 12px 24px;-->
+<!--            border-radius: 12px;-->
+<!--            text-decoration: none;-->
+<!--            font-weight: 600;-->
+<!--            transition: 0.3s;-->
+<!--        }-->
+
+<!--        .btn-back:hover { opacity: 0.9; transform: translateY(-1px); }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<div class="sidebar">-->
+<!--    <div class="logo">DreaMora</div>-->
+<!--    <a href="/inventory" class="nav-item">Inventory Management</a>-->
+<!--    <a href="/menu" class="nav-item">System Menu</a>-->
+<!--    <a href="/payments" class="nav-item">Payments</a>-->
+<!--    <a href="/analytics" class="nav-item active">Analytics</a>-->
+<!--    <a href="/profile" class="nav-item">My Profile</a>-->
+<!--    <a href="/logout" class="nav-item" style="margin-top: 50px; color: #e74c3c;">Logout</a>-->
+<!--</div>-->
+
+<!--<div class="main-content">-->
+<!--    <div class="header-section">-->
+<!--        <h1 th:text="'Price History: ' + ${item.name}">Price History</h1>-->
+<!--        <p>Track changes in pricing for this specific inventory item over time.</p>-->
+<!--    </div>-->
+
+<!--    <div class="stats-grid">-->
+<!--        <div class="stat-card">-->
+<!--            <span>Current Price</span>-->
+<!--            <h2 th:text="${item.price} + ' LKR'">0.00 LKR</h2>-->
+<!--        </div>-->
+<!--        <div class="stat-card">-->
+<!--            <span>Total Adjustments</span>-->
+<!--            <h2 th:text="${#lists.size(historyList)}">0</h2>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="table-container">-->
+<!--        <table>-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--                <th>Old Price</th>-->
+<!--                <th>New Price</th>-->
+<!--                <th>Old Large Price</th>-->
+<!--                <th>New Large Price</th>-->
+<!--                <th>Changed Date & Time</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr th:each="history : ${historyList}">-->
+<!--                <td><span class="price-badge" th:text="${history.oldPrice}"></span></td>-->
+<!--                <td><span class="price-badge" th:text="${history.newPrice}"></span></td>-->
+<!--                <td th:text="${history.oldLargePrice}"></td>-->
+<!--                <td th:text="${history.newLargePrice}"></td>-->
+<!--                <td class="date-text" th:text="${history.changedAt}"></td>-->
+<!--            </tr>-->
+<!--            <tr th:if="${#lists.isEmpty(historyList)}">-->
+<!--                <td colspan="5" style="text-align: center; color: var(&#45;&#45;text-muted); padding: 40px;">-->
+<!--                    No price history records available for this item.-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+
+<!--    <a href="/admin" class="btn-back">Back to Dashboard</a>-->
+<!--</div>-->
+
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price History | Dream Ora</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-orange: #FF7A3D;
+            --main-bg: #F8F9FD;
+            --text-dark: #2D3436;
+            --text-muted: #636E72;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            --nav-height: 70px;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            background-color: var(--main-bg);
+            color: var(--text-dark);
+        }
+
+        /* Top Bar Navigation */
+        .top-bar {
+            height: var(--nav-height);
+            background: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 50px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #EDEDED;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-dark);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--primary-orange);
+        }
+
+        /* Layout Container */
+        .main-content {
+            margin: 0 auto;
+            padding: calc(var(--nav-height) + 50px) 40px 40px 40px;
+            max-width: 1100px;
+        }
+
+        .header-section {
+            margin-bottom: 40px;
+        }
+
+        .header-section h1 {
+            font-size: 32px;
+            margin: 0 0 8px 0;
+            font-weight: 700;
+        }
+
+        .header-section p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 16px;
+        }
+
+        /* Summary Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 24px;
+            border-radius: 24px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .stat-card span {
+            display: block;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .stat-card h2 {
+            font-size: 28px;
+            margin: 0;
+            color: var(--text-dark);
+        }
+
+        /* Table Styling */
+        .table-container {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 16px;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+            border-bottom: 2px solid #F8F9FD;
+        }
+
+        td {
+            padding: 18px 16px;
+            border-bottom: 1px solid #F8F9FD;
+            font-size: 15px;
+        }
+
+        .price-badge {
+            font-weight: 700;
+            color: var(--primary-orange);
+            background: rgba(255, 122, 61, 0.08);
+            padding: 6px 12px;
+            border-radius: 8px;
+        }
+
+        .date-text {
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+<header class="top-bar">
+    <a href="/" class="logo">Dream Ora</a>
+    <a href="/admin" class="back-link">← Back to Dashboard</a>
+</header>
+
+<main class="main-content">
+    <div class="header-section">
+        <h1 th:text="'Price History: ' + ${item.name}">Price History</h1>
+        <p>Track historical pricing adjustments for this item.</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span>Current Price</span>
+            <h2 th:text="${item.price} + ' LKR'">0.00 LKR</h2>
+        </div>
+        <div class="stat-card">
+            <span>Total Adjustments</span>
+            <h2 th:text="${#lists.size(historyList)}">0</h2>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Old Price</th>
+                <th>New Price</th>
+                <th>Old Large Price</th>
+                <th>New Large Price</th>
+                <th>Changed Date & Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="history : ${historyList}">
+                <td><span class="price-badge" th:text="${history.oldPrice}"></span></td>
+                <td><span class="price-badge" th:text="${history.newPrice}"></span></td>
+                <td th:text="${history.oldLargePrice}"></td>
+                <td th:text="${history.newLargePrice}"></td>
+                <td class="date-text" th:text="${history.changedAt}"></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(historyList)}">
+                <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 60px;">
+                    No price history records found.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+</body>
+</html>
